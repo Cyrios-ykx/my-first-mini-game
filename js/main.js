@@ -22,10 +22,7 @@ export default class Main {
   restart() {
     databus.reset()
 
-    canvas.removeEventListener(
-      'touchstart',
-      this.touchHandler
-    )
+    canvas.removeEventListener('touchstart', this.touchHandler)
 
     this.bg = new BackGround(ctx)
     this.player = new Player(ctx)
@@ -38,10 +35,7 @@ export default class Main {
     // 清除上一局的动画
     window.cancelAnimationFrame(this.aniId)
 
-    this.aniId = window.requestAnimationFrame(
-      this.bindLoop,
-      canvas
-    )
+    this.aniId = window.requestAnimationFrame(this.bindLoop, canvas)
   }
 
   /**
@@ -96,10 +90,13 @@ export default class Main {
 
     const area = this.gameinfo.btnArea
 
-    if (x >= area.startX
-        && x <= area.endX
-        && y >= area.startY
-        && y <= area.endY) this.restart()
+    if (
+      x >= area.startX &&
+      x <= area.endX &&
+      y >= area.startY &&
+      y <= area.endY
+    )
+      this.restart()
   }
 
   /**
@@ -111,11 +108,9 @@ export default class Main {
 
     this.bg.render(ctx)
 
-    databus.bullets
-      .concat(databus.enemys)
-      .forEach((item) => {
-        item.drawToCanvas(ctx)
-      })
+    databus.bullets.concat(databus.enemys).forEach((item) => {
+      item.drawToCanvas(ctx)
+    })
 
     this.player.drawToCanvas(ctx)
 
@@ -145,11 +140,9 @@ export default class Main {
 
     this.bg.update()
 
-    databus.bullets
-      .concat(databus.enemys)
-      .forEach((item) => {
-        item.update()
-      })
+    databus.bullets.concat(databus.enemys).forEach((item) => {
+      item.update()
+    })
 
     this.enemyGenerate()
 
@@ -168,9 +161,6 @@ export default class Main {
     this.update()
     this.render()
 
-    this.aniId = window.requestAnimationFrame(
-      this.bindLoop,
-      canvas
-    )
+    this.aniId = window.requestAnimationFrame(this.bindLoop, canvas)
   }
 }
