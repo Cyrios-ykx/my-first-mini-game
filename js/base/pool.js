@@ -1,5 +1,5 @@
 const __ = {
-  poolDic: Symbol('poolDic')
+  poolDic: Symbol('poolDic'),
 }
 
 /**
@@ -22,15 +22,13 @@ export default class Pool {
   }
 
   /**
-   * 根据传入的对象标识符，查询对象池
+   * 根据传入的对象标识符，查询对象池，标识符应该唯一
    * 对象池为空创建新的类，否则从对象池中取
    */
-  getItemByClass(name, className) {
+  getItemByClass(name, className, constructorParams) {
     const pool = this.getPoolBySign(name)
 
-    const result = (pool.length
-      ? pool.shift()
-      : new className())
+    const result = pool.length ? pool.shift() : new className(constructorParams)
 
     return result
   }

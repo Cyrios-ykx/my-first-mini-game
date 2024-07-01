@@ -43,29 +43,45 @@ export default class Main {
    * 帧数取模定义成生成的频率
    */
   enemyGenerate() {
+    // 每30帧1只敌人
+    // 为什么后面有敌人越飞越快？
     if (databus.frame % 30 === 0) {
-      const enemy = databus.pool.getItemByClass('enemy', Enemy)
-      enemy.init(6)
+      // const enemy = databus.pool.getItemByClass('enemy', Enemy)
+      const enemyType = databus.score % 3 === 0 ? 'elite' : 'normal'
+      const enemy = databus.pool.getItemByClass(
+        `enemy_${databus.frame}`,
+        Enemy,
+        enemyType
+      )
+
+      enemy.init()
       databus.enemys.push(enemy)
     }
   }
 
-  // 全局碰撞检测
+  // 每帧全局碰撞检测
   collisionDetection() {
     const that = this
 
+    // 每个子弹判定一次
     databus.bullets.forEach((bullet) => {
       for (let i = 0, il = databus.enemys.length; i < il; i++) {
         const enemy = databus.enemys[i]
 
         if (!enemy.isPlaying && enemy.isCollideWith(bullet)) {
-          enemy.playAnimation()
-          that.music.playExplosion()
-
+          // 扣血
+          enemy.vitalityDeduction(1)
           bullet.visible = false
-          databus.score += 1
 
-          break
+          if (enemy.vitality === 0) {
+            enemy.playAnimation()
+            that.music.playExplosion()
+
+            // databus.score += enemy.enemyScore
+            databus.score += 1
+
+            break
+          }
         }
       }
     })
@@ -146,6 +162,7 @@ export default class Main {
 
     this.enemyGenerate()
 
+    // 每帧全局碰撞检测
     this.collisionDetection()
 
     if (databus.frame % 20 === 0) {

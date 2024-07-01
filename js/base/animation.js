@@ -24,7 +24,7 @@ export default class Animation extends Sprite {
     this.interval = 1000 / 60
 
     // 帧定时器
-    this[__.timer] = null
+    this[__.timer] = null // __.的属性也可以改，但是是唯一的？
 
     // 当前播放的帧
     this.index = -1
@@ -79,10 +79,7 @@ export default class Animation extends Sprite {
     this.index = index
 
     if (this.interval > 0 && this.count) {
-      this[__.timer] = setInterval(
-        this.frameLoop.bind(this),
-        this.interval
-      )
+      this[__.timer] = setInterval(this.frameLoop.bind(this), this.interval)
     }
   }
 
